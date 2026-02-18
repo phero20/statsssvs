@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: devStats-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    command: bun run --watch src/index.ts
+    env_file:
+      - api/.env
+    environment:
+      - NODE_ENV=development
+    restart: always
+
+networks:
+  default:
+    name: devStats
