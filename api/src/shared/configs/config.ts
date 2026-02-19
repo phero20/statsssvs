@@ -10,6 +10,7 @@ const configSchema = t.Object({
   githubApiUrl: t.String({ default: "https://api.github.com" }),
   githubGraphqlUrl: t.String({ default: "https://api.github.com/graphql" }),
   githubToken: t.Optional(t.String()),
+  redisUrl: t.String({ default: "redis://localhost:6379" }),
 });
 
 type Config = Static<typeof configSchema>;
@@ -21,6 +22,7 @@ const rawConfig = {
   githubGraphqlUrl:
     process.env.GITHUB_GRAPHQL_URL || "https://api.github.com/graphql",
   githubToken: process.env.GITHUB_TOKEN,
+  redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
 };
 
 // Validate environment variables on startup
