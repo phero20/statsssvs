@@ -27,9 +27,11 @@ export const rateLimiter = new Elysia().onBeforeHandle(({ request, set }) => {
   if (record.count > max) {
     set.status = 429;
     return {
-      status: 429,
-      error: "Too Many Requests",
-      message: "Rate limit exceeded. Please try again later.",
+      success: false,
+      error: {
+        type: "RATE_LIMIT_EXCEEDED",
+        message: "Too many requests. Please try again later.",
+      },
     };
   }
 });
