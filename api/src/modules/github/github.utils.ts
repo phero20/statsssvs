@@ -1,4 +1,4 @@
-import { ContributionCalendar, RepoStats } from "./github.types";
+import { ContributionCalendar, RepoStats } from "@/modules/github/github.types";
 
 export const calculateStreaks = (calendar: ContributionCalendar) => {
   const days = calendar.weeks
