@@ -1,4 +1,5 @@
-import { getConfig } from "../../shared/configs/config";
+import { getConfig } from "@/shared/configs/config";
+import { HttpClient } from "@/shared/lib/http-client";
 
 export interface IGitHubClient {
   fetch<T>(path: string, options?: RequestInit): Promise<T>;
@@ -6,6 +7,14 @@ export interface IGitHubClient {
 }
 
 export class GitHubClient implements IGitHubClient {
+  private restClient: HttpClient;
+  private graphqlClient: HttpClient;
+
+  constructor() {
+    this.restClient = new HttpClient(getConfig("githubApiUrl"));
+    this.graphqlClient = new HttpClient(getConfig("githubGraphqlUrl"));
+  }
+
   async fetch<T>(path: string, options: RequestInit = {}): Promise<T> {
     const token = getConfig("githubToken");
     const headers: Record<string, string> = {
@@ -17,19 +26,7 @@ export class GitHubClient implements IGitHubClient {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${getConfig("githubApiUrl")}${path}`, {
-      ...options,
-      headers,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData.message || `GitHub API error: ${response.status}`,
-      );
-    }
-
-    return response.json();
+    return this.restClient.get<T>(path, { ...options, headers });
   }
 
   async graphql<T>(
@@ -41,26 +38,18 @@ export class GitHubClient implements IGitHubClient {
       throw new Error("GitHub Token is required for GraphQL requests");
     }
 
-    const response = await fetch(getConfig("githubGraphqlUrl"), {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    const { data } = await this.graphqlClient.post<{ data: T; errors?: any[] }>(
+      "",
+      { query, variables },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-      body: JSON.stringify({ query, variables }),
-    });
+    );
 
-    const res = await response.json();
-
-    if (!response.ok || res.errors) {
-      const message =
-        res.errors?.[0]?.message || res.message || "GraphQL Error";
-      throw new Error(message);
-    }
-
-    return res.data;
+    return data;
   }
 }
 
-// Export a singleton instance for default use
 export const githubClient = new GitHubClient();
