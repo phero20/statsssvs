@@ -1,17 +1,19 @@
-import { IGitHubClient } from "./github.client";
-import { GET_USER_STATS_QUERY } from "./github.queries";
+import { IGitHubRepository } from "./github.repository";
 import { aggregateRepoStats, calculateStreaks } from "./github.utils";
-import { GithubGraphqlResponse, UserStatsResponse } from "./github.types";
+import { UserStatsResponse } from "./github.types";
 
+/**
+ * Service Layer
+ * Responsibility: Business logic, data transformation, and orchestration.
+ */
 export class GitHubService {
-  constructor(private readonly client: IGitHubClient) {}
+  constructor(private readonly repository: IGitHubRepository) {}
 
   async fetchDetailedUserStats(username: string): Promise<UserStatsResponse> {
-    const data = await this.client.graphql<GithubGraphqlResponse>(
-      GET_USER_STATS_QUERY,
-      { login: username },
-    );
+    // 1. Get raw data from repository
+    const data = await this.repository.getUserStats(username);
 
+    // 2. Transform raw data into business-relevant format
     const { user } = data;
     const calendar = user.contributionsCollection.contributionCalendar;
 
