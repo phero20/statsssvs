@@ -10,10 +10,20 @@ services:
       - ./api:/app
       - /app/node_modules
     command: bun run --watch src/index.ts
+    depends_on:
+      - redis
     env_file:
       - api/.env
     environment:
       - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: devStats-redis
+    ports:
+      - "6379:6379"
     restart: always
 
 networks:
