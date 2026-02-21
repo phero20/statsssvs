@@ -1,8 +1,11 @@
-export default function StudioPage() {
+import React from 'react'
+
+type Props = {}
+
+const page = (props: Props) => {
   return (
-    <main>
-      <h1>Studio (Builder)</h1>
-      <p>The main platform/stat selection flow.</p>
-    </main>
-  );
+    <div>page</div>
+  )
 }
+
+export default page
