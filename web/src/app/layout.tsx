@@ -17,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body
+        className="h-screen antialiased dark"
+        style={{ colorScheme: "dark" }}
+      >
         <ErrorBoundary>
           <Providers>
             {children}
