@@ -1,11 +1,10 @@
-import React from 'react'
+import { PlatformsGrid } from "./_components/PlatformsGrid";
 
-type Props = {}
 
-const page = (props: Props) => {
+export default function StudioPage() {
   return (
-    <div>page</div>
-  )
+    <main>
+      <PlatformsGrid />
+   </main>
+  );
 }
-
-export default page
