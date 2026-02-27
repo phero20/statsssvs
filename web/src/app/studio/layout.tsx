@@ -1,11 +1,15 @@
-import React from 'react'
+import type { Metadata } from "next";
+import { StudioBackground } from "./_components/Background";
 
-type Props = {}
+export const metadata: Metadata = {
+  title: "DevStats - Studio",
+  description: "Connect your competitive coding profiles.",
+};
 
-const layout = (props: Props) => {
-  return (
-    <div>layout</div>
-  )
+export default function StudioLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <StudioBackground>{children}</StudioBackground>;
 }
-
-export default layout
