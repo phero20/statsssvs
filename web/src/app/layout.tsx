@@ -9,6 +9,13 @@ export const metadata: Metadata = {
 
 import { Toaster } from "sonner";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
+import localFont from "next/font/local";
+
+const satoshi = localFont({
+  src: "../../public/fonts/Satoshi_Complete/Fonts/Variable/Satoshi-Variable.ttf",
+  variable: "--font-satoshi",
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -18,15 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="h-screen antialiased dark"
+        className={`${satoshi.variable} dark h-screen font-(family-name:--font-satoshi) antialiased`}
         style={{ colorScheme: "dark" }}
       >
-        <ErrorBoundary>
-          <Providers>
-            {children}
-            <Toaster richColors position="top-right" />
-          </Providers>
-        </ErrorBoundary>
+        {/* <ErrorBoundary> */}
+        <Providers>
+          {children}
+          <Toaster richColors position="top-right" />
+        </Providers>
+        {/* </ErrorBoundary> */}
       </body>
     </html>
   );
