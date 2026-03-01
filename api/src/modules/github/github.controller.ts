@@ -1,19 +1,15 @@
 import { Elysia } from "elysia";
-import { GitHubService } from "@/modules/github/github.service";
-import { GitHubRepository } from "@/modules/github/github.repository";
+import { fetchDetailedUserStats } from "@/modules/github/github.service";
 import { GithubParamsSchema } from "@/modules/github/github.schema";
-import { githubClient } from "@/modules/github/github.client";
 import { successResponse } from "@/shared/utils/api-handler";
-
-// Dependency Injection Chain
-const repository = new GitHubRepository(githubClient);
-const service = new GitHubService(repository);
+import { cache } from "@/shared/middlewares/cache";
+import { CACHE_TTL } from "@/shared/lib/redis";
 
 export const github = (app: Elysia) =>
-  app.get(
+  app.use(cache({ ttl: CACHE_TTL.LONG })).get(
     "/full-stats/:username",
     async ({ params: { username } }) => {
-      const stats = await service.fetchDetailedUserStats(username);
+      const stats = await fetchDetailedUserStats(username);
       return successResponse(stats);
     },
     {
