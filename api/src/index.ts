@@ -14,9 +14,26 @@ const app = new Elysia()
   .use(errorMiddleware)
   .use(logger)
   .use(rateLimiter)
-  .use(responseStandardizer)
-  .use(helmet())
   .use(swagger())
+  .use(responseStandardizer)
+  .use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+          styleSrc: [
+            "'self'",
+            "'unsafe-inline'",
+            "https://fonts.googleapis.com",
+          ],
+          fontSrc: ["'self'", "https://fonts.gstatic.com"],
+          imgSrc: ["'self'", "data:", "https://fastly.jsdelivr.net"],
+          connectSrc: ["'self'"],
+        },
+      },
+    }),
+  )
   .use(
     cors({
       origin:
