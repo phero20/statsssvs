@@ -1,44 +1,23 @@
 import { getConfig } from "@/shared/configs/config";
 import { HttpClient } from "@/shared/lib/http-client";
+import { UnauthorizedError } from "@/shared/utils/errors";
 
-export interface IGitHubClient {
-  fetch<T>(path: string, options?: RequestInit): Promise<T>;
-  graphql<T>(query: string, variables?: Record<string, any>): Promise<T>;
-}
+// Initialize GraphQL Client
+const graphqlHttpClient = new HttpClient(getConfig("githubGraphqlUrl"));
 
-export class GitHubClient implements IGitHubClient {
-  private restClient: HttpClient;
-  private graphqlClient: HttpClient;
-
-  constructor() {
-    this.restClient = new HttpClient(getConfig("githubApiUrl"));
-    this.graphqlClient = new HttpClient(getConfig("githubGraphqlUrl"));
-  }
-
-  async fetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const token = getConfig("githubToken");
-    const headers: Record<string, string> = {
-      Accept: "application/vnd.github.v3+json",
-      ...((options.headers as Record<string, string>) || {}),
-    };
-
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    return this.restClient.get<T>(path, { ...options, headers });
-  }
-
-  async graphql<T>(
+export const githubClient = {
+  graphql: async <T>(
     query: string,
     variables: Record<string, any> = {},
-  ): Promise<T> {
+  ): Promise<T> => {
     const token = getConfig("githubToken");
     if (!token) {
-      throw new Error("GitHub Token is required for GraphQL requests");
+      throw new UnauthorizedError(
+        "GitHub Token is required for GraphQL requests",
+      );
     }
 
-    const { data } = await this.graphqlClient.post<{ data: T; errors?: any[] }>(
+    const { data } = await graphqlHttpClient.post<{ data: T; errors?: any[] }>(
       "",
       { query, variables },
       {
@@ -49,7 +28,5 @@ export class GitHubClient implements IGitHubClient {
     );
 
     return data;
-  }
-}
-
-export const githubClient = new GitHubClient();
+  },
+};
