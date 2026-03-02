@@ -1,37 +1,38 @@
 import { Elysia } from "elysia";
+import { redis } from "@/shared/lib/redis";
+import { AppError } from "@/shared/utils/errors";
 
-// Simple in-memory rate limiter for demonstration
-const cache = new Map<string, { count: number; start: number }>();
+export const rateLimiter = new Elysia().onBeforeHandle(async ({ request }) => {
+  // Use CF-Connecting-IP if behind Cloudflare, else fallback to standard headers or anonymous
+  const ip =
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-forwarded-for") ||
+    "anonymous";
 
-export const rateLimiter = new Elysia().onBeforeHandle(({ request, set }) => {
-  const ip = request.headers.get("x-forwarded-for") || "anonymous";
-  const now = Date.now();
-  const windowMs = 60 * 1000; // 1 minute
-  const max = 60; // 60 requests per minute
+  const windowSeconds = 60; // 1 minute window
+  const maxRequests = 60; // 60 requests per minute limit
+  const key = `ratelimit:${ip}`;
 
-  const record = cache.get(ip);
+  try {
+    // Increment the counter for this IP
+    const currentCount = await redis.incr(key);
 
-  if (!record) {
-    cache.set(ip, { count: 1, start: now });
-    return;
-  }
+    // If this is the very first request in the window, set the expiration
+    if (currentCount === 1) {
+      await redis.expire(key, windowSeconds);
+    }
 
-  if (now - record.start > windowMs) {
-    record.count = 1;
-    record.start = now;
-    return;
-  }
+    if (currentCount > maxRequests) {
+      throw new AppError(
+        "Too many requests. Please try again later.",
+        429,
+        "RATE_LIMIT_EXCEEDED",
+      );
+    }
+  } catch (err: any) {
+    if (err instanceof AppError) throw err;
 
-  record.count++;
-
-  if (record.count > max) {
-    set.status = 429;
-    return {
-      success: false,
-      error: {
-        type: "RATE_LIMIT_EXCEEDED",
-        message: "Too many requests. Please try again later.",
-      },
-    };
+    // If Redis itself fails, we fail open (allow the request) to prevent a Redis outage from taking down the API entirely.
+    console.error("Redis Rate Limiter Error:", err);
   }
 });
