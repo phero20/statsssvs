@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { getConfig } from "../configs/config";
+import { getConfig } from "@/shared/configs/config";
 
 export const logger = new Elysia({ name: "logger-middleware" })
   .derive({ as: "global" }, () => ({
