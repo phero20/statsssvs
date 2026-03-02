@@ -1,5 +1,7 @@
 import { Elysia } from "elysia";
 import { github } from "@/modules/github";
+import { leetcode } from "@/modules/leetcode";
+import { codeforces } from "@/modules/codeforces";
 import { cache } from "@/shared/middlewares/cache";
 import { CACHE_TTL } from "@/shared/lib/redis";
 
@@ -15,6 +17,8 @@ export const routes = (app: Elysia) =>
       app.group("/v1", (app) =>
         app
           .use(cache({ ttl: CACHE_TTL.SHORT }))
-          .group("/github", (app) => app.use(github)),
+          .group("/github", (app) => app.use(github))
+          .group("/leetcode", (app) => app.use(leetcode))
+          .group("/codeforces", (app) => app.use(codeforces)),
       ),
     );
