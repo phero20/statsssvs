@@ -11,6 +11,8 @@ const configSchema = t.Object({
   githubGraphqlUrl: t.String({ default: "https://api.github.com/graphql" }),
   githubToken: t.Optional(t.String()),
   redisUrl: t.String({ default: "redis://localhost:6379" }),
+  leetcodeGraphqlUrl: t.String({ default: "https://leetcode.com/graphql/" }),
+  codeforcesApiUrl: t.String({ default: "https://codeforces.com/api/" }),
 });
 
 type Config = Static<typeof configSchema>;
@@ -23,6 +25,10 @@ const rawConfig = {
     process.env.GITHUB_GRAPHQL_URL || "https://api.github.com/graphql",
   githubToken: process.env.GITHUB_TOKEN,
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
+  leetcodeGraphqlUrl:
+    process.env.LEETCODE_GRAPHQL_URL || "https://leetcode.com/graphql/",
+  codeforcesApiUrl:
+    process.env.CODEFORCES_API_URL || "https://codeforces.com/api/",
 };
 
 // Validate environment variables on startup
