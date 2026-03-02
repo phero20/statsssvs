@@ -1,6 +1,11 @@
 import { describe, it, expect } from "bun:test";
-import { calculateStreaks, aggregateRepoStats } from "./github.utils";
-import { ContributionCalendar, GithubRepo } from "./github.types";
+import {
+  calculateStreaks,
+  aggregateRepoStats,
+} from "@/modules/github/github.utils";
+import {
+  ContributionCalendar,
+} from "@/modules/github/github.types";
 
 describe("GitHub Utils", () => {
   describe("calculateStreaks", () => {
@@ -38,20 +43,20 @@ describe("GitHub Utils", () => {
 
   describe("aggregateRepoStats", () => {
     it("should aggregate stars correctly", () => {
-      const mockRepos: any[] = [
-        { stargazers_count: 10 },
-        { stargazers_count: 5 },
-        { stargazers_count: 20 },
+      const mockRepos = [
+        { stargazerCount: 10 },
+        { stargazerCount: 5 },
+        { stargazerCount: 20 },
       ];
 
-      const result = aggregateRepoStats(mockRepos as GithubRepo[]);
+      const result = aggregateRepoStats(mockRepos, 3);
       expect(result.totalStars).toBe(35);
       expect(result.highestStars).toBe(20);
       expect(result.totalRepos).toBe(3);
     });
 
     it("should handle empty repo list", () => {
-      const result = aggregateRepoStats([]);
+      const result = aggregateRepoStats([], 0);
       expect(result.totalStars).toBe(0);
       expect(result.highestStars).toBe(0);
       expect(result.totalRepos).toBe(0);
