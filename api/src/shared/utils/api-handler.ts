@@ -1,4 +1,4 @@
-import { ApiResponse } from "./response";
+import { ApiResponse } from "@/shared/utils/response";
 
 /**
  * Explicitly wraps data in the standard API format.
