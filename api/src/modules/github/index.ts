@@ -1,1 +1,1 @@
-export * from "./github.controller";
+export * from "@/modules/github/github.controller";
