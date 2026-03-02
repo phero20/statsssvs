@@ -9,17 +9,26 @@ import { Elysia } from "elysia";
  */
 export const responseStandardizer = new Elysia({
   name: "response-standardizer",
-}).onAfterHandle({ as: "global" }, ({ response, set }) => {
-  // If it's already a standard response or an error format, skip
+}).onAfterHandle({ as: "global" }, ({ response, request }) => {
+  const url = new URL(request.url);
+
+  // Skip modifying swagger UI and OpenAPI JSON routes
+  if (url.pathname.startsWith("/swagger")) return;
+
+  // Skip if it's already a native Response object (e.g. HTML, files)
+  if (response instanceof Response) return;
+
+  // If it's already a standard response or an error format, skip by returning undefined
+  // Returning undefined tells Elysia to keep the original response as-is.
   if (
     response &&
     typeof response === "object" &&
     ("success" in response || "error" in response)
   ) {
-    return response;
+    return;
   }
 
-  // Fallback standardization
+  // Fallback standardization for raw object/string returns
   return {
     success: true,
     data: response,
