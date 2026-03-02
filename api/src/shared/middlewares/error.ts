@@ -1,6 +1,6 @@
 import { Elysia, ValidationError } from "elysia";
-import { getConfig } from "../configs/config";
-import { AppError } from "../utils/errors";
+import { getConfig } from "@/shared/configs/config";
+import { AppError } from "@/shared/utils/errors";
 
 export const errorMiddleware = new Elysia().onError(({ code, error, set }) => {
   // Determine status code
