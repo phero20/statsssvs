@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { getConfig } from "../configs/config";
+import { getConfig } from "@/shared/configs/config";
 
 /**
  * Singleton Redis client instance.
