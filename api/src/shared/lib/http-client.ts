@@ -1,5 +1,5 @@
-import { ExternalAPIError } from "../utils/errors";
-import { getConfig } from "../configs/config";
+import { ExternalAPIError } from "@/shared/utils/errors";
+import { getConfig } from "@/shared/configs/config";
 
 export interface HttpClientOptions extends RequestInit {
   params?: Record<string, string>;
