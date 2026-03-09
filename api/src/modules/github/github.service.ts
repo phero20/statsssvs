@@ -6,25 +6,17 @@ import {
 import { UserStatsResponse } from "@/modules/github/github.types";
 import { NotFoundError } from "@/shared/utils/errors";
 
-/**
- * Service Layer
- * Responsibility: Business logic, data transformation, and orchestration.
- */
 export const fetchDetailedUserStats = async (
   username: string,
 ): Promise<UserStatsResponse> => {
-  // 1. Get raw data from repository
   const data = await getUserStats(username);
 
-  // If user doesn't exist, GitHub GraphQL might throw an error instead of returning null
-  // but it's safe to check if user is null just in case
   if (!data?.user) {
     throw new NotFoundError(`User ${username} not found on GitHub`);
   }
 
-  // 2. Transform raw data into business-relevant format
   const { user } = data;
-  const calendar = user.contributionsCollection.contributionCalendar;
+  const calendar = user?.contributionsCollection?.contributionCalendar;
 
   return {
     profile: {
@@ -32,12 +24,11 @@ export const fetchDetailedUserStats = async (
       name: user.name,
       avatarUrl: user.avatarUrl,
       bio: user.bio,
-      followers: user.followers.totalCount,
-      following: user.following.totalCount,
+      followers: user.followers?.totalCount ?? 0,
     },
     repoStats: aggregateRepoStats(
-      user.repositories.nodes,
-      user.repositories.totalCount,
+      user.repositories?.nodes ?? [],
+      user.repositories?.totalCount ?? 0,
     ),
     streaks: calculateStreaks(calendar),
     contributions: calendar,
