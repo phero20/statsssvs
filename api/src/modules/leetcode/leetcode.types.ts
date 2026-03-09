@@ -1,50 +1,70 @@
-export interface LeetcodeGraphqlResponse {
-  matchedUser: {
-    username: string;
-    githubUrl: string | null;
-    twitterUrl: string | null;
-    linkedinUrl: string | null;
-    profile: {
-      realName: string | null;
-      userAvatar: string;
-      ranking: number;
-      reputation: number;
-      starRating: number;
-      aboutMe: string | null;
-      company: string | null;
-      countryName: string | null;
-      school: string | null;
-    };
-    submitStats: {
-      acSubmissionNum: {
-        difficulty: string;
-        count: number;
-        submissions: number;
-      }[];
-    };
-    badges: {
-      id: string;
-      name: string;
-      shortName: string;
-      displayName: string;
-      icon: string;
-    }[];
-    languageProblemCount: {
-      languageName: string;
-      problemsSolved: number;
-    }[];
-  } | null;
-  userContestRanking: {
-    attendedContestsCount: number;
-    rating: number;
-    globalRanking: number;
-    totalParticipants: number;
-    topPercentage: number;
-  } | null;
-  allQuestionsCount: {
+export interface AlfaProfileResponse {
+  username: string;
+  name: string;
+  birthday: string | null;
+  avatar: string;
+  ranking: number;
+  reputation: number;
+  gitHub: string | null;
+  twitter: string | null;
+  linkedIN: string | null;
+  school: string | null;
+  skillTags: string[];
+  about: string;
+  country: string;
+  company: string | null;
+}
+
+export interface AlfaContestResponse {
+  contestAttend: number;
+  contestRating: number;
+  contestGlobalRanking: number;
+  contestTopPercentage: number;
+  contestBadges: any;
+  contestParticipation: any[];
+}
+
+export interface AlfaBadgesResponse {
+  badgesCount: number;
+  badges: {
+    id: string;
+    displayName: string;
+    icon: string;
+    creationDate: string;
+  }[];
+  upcomingBadges: any[];
+  activeBadge: any;
+}
+
+export interface AlfaLanguageResponse {
+  languageProblemCount: {
+    languageName: string;
+    problemsSolved: number;
+  }[];
+}
+
+export interface AlfaSolvedResponse {
+  solvedProblem: number;
+  easySolved: number;
+  mediumSolved: number;
+  hardSolved: number;
+  totalSubmissionNum: {
     difficulty: string;
     count: number;
+    submissions: number;
   }[];
+  acSubmissionNum: {
+    difficulty: string;
+    count: number;
+    submissions: number;
+  }[];
+}
+
+export interface AlfaCalendarResponse {
+  activeYears: number[];
+  streak: number;
+  totalActiveDays: number;
+  submissionCalendar: string;
 }
 
 export type Difficulty = "All" | "Easy" | "Medium" | "Hard";
@@ -87,4 +107,10 @@ export interface LeetcodeStatsResponse {
     name: string;
     icon: string;
   }[];
+  calendar: {
+    activeYears: number[];
+    streak: number;
+    totalActiveDays: number;
+    submissionCalendar: Record<string, number>;
+  };
 }
