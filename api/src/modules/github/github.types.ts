@@ -10,7 +10,6 @@ export interface GithubGraphqlResponse {
     twitterUsername: string | null;
     websiteUrl: string | null;
     followers: { totalCount: number };
-    following: { totalCount: number };
     repositories: {
       totalCount: number;
       nodes: {
@@ -51,7 +50,6 @@ export interface UserStatsResponse {
     avatarUrl: string;
     bio: string | null;
     followers: number;
-    following: number;
   };
   repoStats: RepoStats;
   streaks: {
