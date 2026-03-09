@@ -15,6 +15,7 @@ const configSchema = t.Object({
     default: "http://host.docker.internal:3003",
   }),
   codeforcesApiUrl: t.String({ default: "https://codeforces.com/api/" }),
+  frontendUrl: t.Optional(t.String()),
 });
 
 type Config = Static<typeof configSchema>;
@@ -31,6 +32,7 @@ const rawConfig = {
     process.env.LEETCODE_API_URL || "http://host.docker.internal:3003",
   codeforcesApiUrl:
     process.env.CODEFORCES_API_URL || "https://codeforces.com/api/",
+  frontendUrl: process.env.FRONTEND_URL,
 };
 
 // Validate environment variables on startup
