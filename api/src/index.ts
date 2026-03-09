@@ -38,7 +38,7 @@ const app = new Elysia()
     cors({
       origin:
         getConfig("nodeEnv") === "production"
-          ? ["https://localhost:3000"]
+          ? getConfig("frontendUrl") || true
           : true,
       methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     }),
