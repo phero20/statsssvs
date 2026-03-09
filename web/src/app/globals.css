@@ -8,6 +8,7 @@
   --color-surface: hsl(var(--surface));
   --color-surface-hover: hsl(var(--surface-hover));
   --color-mint: hsl(var(--mint));
+  --color-error: hsl(var(--error));
   --color-text: hsl(var(--text));
   --color-text-muted: hsl(var(--text-muted));
 
@@ -62,30 +63,32 @@
     }
   }
 
-  --animation-border-beam: border-beam var(--duration) infinite linear var(--delay);
+  --animation-border-beam: border-beam var(--duration) infinite linear
+    var(--delay);
 }
 
 @layer base {
   :root {
     /* --- CREATIVE STUDIO GLOBAL DESIGN SYSTEM --- */
-    
+
     /* 1. Backgrounds & Elevations (The Obsidian Scale) */
-    --void: 266 92% 5%;           /* #0B0118 - Base background */
-    --layer: 222 47% 11%;         /* Layer 1: Base cards */
-    --surface: 222 47% 16%;       /* Layer 2: Inputs, floating elements */
+    --void: 266 92% 5%; /* #0B0118 - Base background */
+    --layer: 222 47% 11%; /* Layer 1: Base cards */
+    --surface: 222 47% 16%; /* Layer 2: Inputs, floating elements */
     --surface-hover: 222 47% 20%; /* Layer 3: Hover states */
 
     /* 2. Brand & Accents */
-    --mint: 158 100% 50%;         /* #00FFA3 - Cyber Mint */
+    --mint: 158 100% 50%; /* #00FFA3 - Cyber Mint */
+    --error: 0 84% 60%; /* Cyber Red */
 
     /* 3. Typography */
-    --text: 210 40% 98%;          /* High contrast white */
-    --text-muted: 210 40% 65%;    /* Dimmed text for placeholders/subtitles */
+    --text: 210 40% 98%; /* High contrast white */
+    --text-muted: 210 40% 65%; /* Dimmed text for placeholders/subtitles */
 
     /* Legacy Shadcn Variables */
     --background: var(--void);
     --foreground: var(--text);
-    --border: 210 40% 98% / 10%; 
+    --border: 210 40% 98% / 10%;
     --radius: 0.5rem;
 
     /* Platform Colors */
@@ -96,7 +99,7 @@
     --linkedin: 210 90% 50%;
     --name: 340 80% 60%;
     --photo: 180 80% 50%;
-    --email: 45 100% 50%; 
+    --email: 45 100% 50%;
   }
 }
 
@@ -107,7 +110,9 @@
   body {
     transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     @apply bg-background text-foreground selection:bg-mint/30 antialiased selection:text-white;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
 
     background-image: linear-gradient(
       to bottom,
