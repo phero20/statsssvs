@@ -2,17 +2,12 @@ import { getUserStats } from "@/modules/codeforces/codeforces.repository";
 import { CodeforcesStatsResponse } from "@/modules/codeforces/codeforces.types";
 import { NotFoundError, ExternalAPIError } from "@/shared/utils/errors";
 
-/**
- * Service Layer
- * Responsibility: Business logic, data transformation, and orchestration
- */
 export const fetchDetailedCodeforcesStats = async (
   username: string,
 ): Promise<CodeforcesStatsResponse> => {
   const data = await getUserStats(username);
 
   if (data.status === "FAILED") {
-    // If the handle doesn't exist, CF returns "FAILED" with a comment
     if (data.comment && data.comment.includes("not found")) {
       throw new NotFoundError(`User ${username} not found on Codeforces`);
     }
