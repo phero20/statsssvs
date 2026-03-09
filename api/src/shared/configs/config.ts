@@ -10,8 +10,10 @@ const configSchema = t.Object({
   githubApiUrl: t.String({ default: "https://api.github.com" }),
   githubGraphqlUrl: t.String({ default: "https://api.github.com/graphql" }),
   githubToken: t.Optional(t.String()),
-  redisUrl: t.String({ default: "redis://localhost:6379" }),
-  leetcodeGraphqlUrl: t.String({ default: "https://leetcode.com/graphql/" }),
+  redisUrl: t.String(),
+  leetcodeApiUrl: t.String({
+    default: "http://host.docker.internal:3003",
+  }),
   codeforcesApiUrl: t.String({ default: "https://codeforces.com/api/" }),
 });
 
@@ -24,9 +26,9 @@ const rawConfig = {
   githubGraphqlUrl:
     process.env.GITHUB_GRAPHQL_URL || "https://api.github.com/graphql",
   githubToken: process.env.GITHUB_TOKEN,
-  redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
-  leetcodeGraphqlUrl:
-    process.env.LEETCODE_GRAPHQL_URL || "https://leetcode.com/graphql/",
+  redisUrl: process.env.REDIS_URL,
+  leetcodeApiUrl:
+    process.env.LEETCODE_API_URL || "http://host.docker.internal:3003",
   codeforcesApiUrl:
     process.env.CODEFORCES_API_URL || "https://codeforces.com/api/",
 };
