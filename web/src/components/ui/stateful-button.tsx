@@ -92,7 +92,6 @@ export const Button = ({
   return (
     <motion.button
       layout
-      layoutId="button"
       ref={scope}
       className={cn(
         "relative flex shrink-0 cursor-pointer items-center justify-center rounded-full font-medium transition duration-200",

@@ -26,7 +26,7 @@ export const BentoGrid = ({
       }}
       viewport={{ once: true, margin: "-50px" }}
       className={cn(
-        "grid w-full auto-rows-[160px] grid-cols-1 gap-3 sm:auto-rows-[180px] sm:grid-cols-2 sm:gap-4 lg:auto-rows-[200px] lg:grid-cols-4",
+        "grid w-full auto-rows-[180px] grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:auto-rows-[200px] lg:grid-cols-4",
         className,
       )}
     >
@@ -80,7 +80,7 @@ export const BentoCard = ({
       viewport={{ once: true, margin: "-30px" }}
       whileHover="hover"
       className={cn(
-        "group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl",
+        "group relative flex flex-col overflow-hidden rounded-2xl",
         className,
       )}
       style={{
